@@ -11,12 +11,23 @@ export class App extends Component {
     filter: '',
   };
 
-  //Update the value
+  //Add initial contacts from LocalStorage
+  componentDidMount() {
+    const localContacts = localStorage.getItem('contacts');
+    const parseContacts = JSON.parse(localContacts);
+    if (parseContacts) {
+      this.setState({
+        contacts: parseContacts,
+      });
+    }
+  }
+
+  //Add contacts to the state
   handleChange = evt => {
     this.setState({ [evt.currentTarget.name]: evt.target.value });
   };
 
-  //Update the state
+  //Add contacts
   handleAddContact = data => {
     const stateContacts = [...this.state.contacts];
     const existContact = this.state.contacts.filter(contact => {
@@ -38,6 +49,13 @@ export class App extends Component {
       ],
     });
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    //Update local storage
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   //Delete a contact with ID
   deleteContact = contactId => {
