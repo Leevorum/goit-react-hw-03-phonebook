@@ -22,6 +22,13 @@ export class App extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    //Update local storage
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   //Add contacts to the state
   handleChange = evt => {
     this.setState({ [evt.currentTarget.name]: evt.target.value });
@@ -49,13 +56,6 @@ export class App extends Component {
       ],
     });
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    //Update local storage
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   //Delete a contact with ID
   deleteContact = contactId => {
